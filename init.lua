@@ -68,7 +68,7 @@ require('lazy').setup({
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
-
+  'voldikss/vim-floaterm',
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
@@ -127,7 +127,6 @@ require('lazy').setup({
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
-      -- See `:help gitsigns.txt`
       signs = {
         add = { text = '+' },
         change = { text = '~' },
@@ -153,7 +152,6 @@ require('lazy').setup({
       end,
     },
   },
-
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
@@ -169,22 +167,36 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        icons_enabled = false,
+        icons_enabled = true,
         theme = 'onedark',
         component_separators = '|',
         section_separators = '',
       },
     },
   },
-
   {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    main = "ibl",
-    opts = {},
+    'romgrk/barbar.nvim',
+    dependencies = {
+      'lewis6991/gitsigns.nvim',     -- OPTIONAL: for git status
+      'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+    },
+    init = function() vim.g.barbar_auto_setup = false end,
+    opts = {
+      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+      -- animation = true,
+      -- insert_at_start = true,
+      -- …etc.
+    },
+    version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
+  -- {
+  --   -- Add indentation guides even on blank lines
+  --   'lukas-reineke/indent-blankline.nvim',
+  --   -- Enable `lukas-reineke/indent-blankline.nvim`
+  --   -- See `:help indent_blankline.txt`
+  --   main = "ibl",
+  --   opts = {},
+  -- },
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
@@ -235,6 +247,10 @@ require('lazy').setup({
 }, {})
 
 vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
+-- Fix Editing to the same line
+vim.cmd([[
+    autocmd CursorMoved,CursorMovedI * normal zz
+]])
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -287,8 +303,55 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+vim.api.nvim_set_keymap('n', '<Leader>k', '<PageUp>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>j', '<PageDown>', { noremap = true, silent = true })
 
+local map = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+
+-- Move to previous/next
+map('n', '<A-,>', '<Cmd>BufferPrevious<CR>', opts)
+map('n', '<A-.>', '<Cmd>BufferNext<CR>', opts)
+-- Re-order to previous/next
+map('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', opts)
+map('n', '<A->>', '<Cmd>BufferMoveNext<CR>', opts)
+-- Goto buffer in position...
+map('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', opts)
+map('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
+map('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
+map('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
+map('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', opts)
+map('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', opts)
+map('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', opts)
+map('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
+map('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
+map('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
+-- Pin/unpin buffer
+map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
+-- Close buffer
+map('n', '<A-c>', '<Cmd>BufferClose<CR>', opts)
+-- Wipeout buffer
+--                 :BufferWipeout
+-- Close commands
+--                 :BufferCloseAllButCurrent
+--                 :BufferCloseAllButPinned
+--                 :BufferCloseAllButCurrentOrPinned
+--                 :BufferCloseBuffersLeft
+--                 :BufferCloseBuffersRight
+-- Magic buffer-picking mode
+map('n', '<C-p>', '<Cmd>BufferPick<CR>', opts)
+-- Sort automatically by...
+map('n', '<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
+map('n', '<Space>bd', '<Cmd>BufferOrderByDirectory<CR>', opts)
+map('n', '<Space>bl', '<Cmd>BufferOrderByLanguage<CR>', opts)
+map('n', '<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>', opts)
 -- See `:help vim.highlight.on_yank()`
+vim.g.floaterm_shell = "pwsh"
+map('t', '<Esc>', '<C-\\><C-n>', { noremap = true, silent = true })
+map('n', '<Leader>tt', ':FloatermToggle<CR>', opts)
+map('n', '<Leader>tn', ':FloatermNew<CR>', opts)
+map('n', '<Leader>tl', ':FloatermNext<CR>', opts)
+map('n', '<Leader>th', ':FloatermPrev<CR>', opts)
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
 
@@ -460,6 +523,7 @@ require('which-key').register({
   ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+  ['<leader>t'] = { name = '[T]erminal', _ = 'which_key_ignore' },
 })
 
 -- Enable the following language servers
@@ -471,13 +535,9 @@ require('which-key').register({
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
+  clangd = {},
+  pyright = {},
+  rust_analyzer = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
