@@ -72,6 +72,11 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    opts = {}
+  },
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -160,7 +165,15 @@ require('lazy').setup({
       vim.cmd.colorscheme 'onedark'
     end,
   },
+  --[[ {
+    "marko-cerovac/material.nvim",
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'material-deep-ocean'
+      -- vim.g.material_style = "deep ocean"
+    end
 
+  }, ]]
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -168,7 +181,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = true,
-        theme = 'onedark',
+        theme = 'material-deep-ocean',
         component_separators = '|',
         section_separators = '',
       },
@@ -186,6 +199,9 @@ require('lazy').setup({
       -- animation = true,
       -- insert_at_start = true,
       -- …etc.
+      icons = {
+        buffer_index = true
+      }
     },
     version = '^1.0.0', -- optional: only update when a new 1.x version is released
   },
@@ -234,7 +250,7 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  require 'kickstart.plugins.autoformat',
+  -- require 'kickstart.plugins.autoformat',
   require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
@@ -292,7 +308,7 @@ vim.o.timeoutlen = 300
 vim.o.completeopt = 'menuone,noselect'
 
 vim.o.termguicolors = true
-
+--
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
