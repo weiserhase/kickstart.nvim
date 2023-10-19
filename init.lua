@@ -78,10 +78,18 @@ vim.o.timeoutlen = 300
 vim.o.completeopt = 'menuone,noselect'
 
 vim.o.termguicolors = true
-
+vim.cmd([[
+set autoindent
+set shiftround
+set expandtab
+]])
 -- Auto Format Buffers
 vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
+local telescope = require('telescope.builtin')
 
+vim.cmd [[
+  command! FindIgnoredFiles lua telescope.find_files({ use_git_ignore = false })
+]]
 -- Fix Editing to the same line
 vim.cmd([[
     autocmd CursorMoved,CursorMovedI * normal zz
@@ -158,16 +166,6 @@ local on_attach = function(_, bufnr)
 end
 
 -- document existing key chains
-require('which-key').register({
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-  ['<leader>t'] = { name = '[T]erminal', _ = 'which_key_ignore' },
-})
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
