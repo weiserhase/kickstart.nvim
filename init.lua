@@ -98,8 +98,9 @@ vim.cmd([[
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
-vim.api.nvim_set_keymap('i', '<C-V>', '<Nop>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-V>', '<Nop>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('i', '<C-V>', '<Nop>', { noremap = true, silent = true })vim.api.nvim_set_keymap('n', '<C-V>', '<C-Q>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-v>', '<C-Q>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-V>', '<C-Q>', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
