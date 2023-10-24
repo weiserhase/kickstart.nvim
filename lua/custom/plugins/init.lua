@@ -137,6 +137,14 @@ return {
     },
     { "neovimhaskell/haskell-vim" },
     {
+        'mrcjkb/haskell-tools.nvim',
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+        },
+        version = '^2', -- Recommended
+        ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
+    },
+    {
         'romgrk/barbar.nvim',
         dependencies = {
             'lewis6991/gitsigns.nvim',     -- OPTIONAL: for git status

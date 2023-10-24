@@ -42,7 +42,7 @@ require('which-key').register({
     ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
     ['<leader>ws'] = { name = '[W]indow [S]plit', _ = 'which_key_ignore' },
     ['<leader>wd'] = { name = '[W]orking [D]irectory', _ = 'which_key_ignore' },
-    ['<leader>i'] = { name = 'Search [I]gnored', _  ='which_key_ignore' },
+    ['<leader>i'] = { name = 'Search [I]gnored', _ = 'which_key_ignore' },
     ['<leader>t'] = { name = '[T]erminal', _ = 'which_key_ignore' },
 })
 
@@ -69,6 +69,7 @@ local lspKeybindings = {
         ['<leader>rn'] = { cmd = vim.lsp.buf.rename, desc = '[R]e[n]ame' },
         ['<leader>ca'] = { cmd = vim.lsp.buf.code_action, desc = '[C]ode [A]ction' },
         ['gd'] = { cmd = vim.lsp.buf.definition, desc = '[G]oto [D]efinition' },
+        -- ['ho'] = { cmd = require('telescope._extensions').hoogle.list, desc = "Hoogle" }
         ['gr'] = { cmd = require('telescope.builtin').lsp_references, desc = '[G]oto [R]eferences' },
         ['gI'] = { cmd = require('telescope.builtin').lsp_implementations, desc = '[G]oto [I]mplementation' },
         ['<leader>D'] = { cmd = vim.lsp.buf.type_definition, desc = 'Type [D]efinition' },
