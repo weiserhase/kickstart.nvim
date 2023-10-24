@@ -16,7 +16,7 @@ return {
     },
     -- Detect tabstop and shiftwidth automatically
     -- 'tpope/vim-sleuth',
-
+    { 'nvim-lua/plenary.nvim' },
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
@@ -42,6 +42,7 @@ return {
         },
     },
     -- Idris2 Lsp
+    { 'ShinKage/idris2-vim' },
     {
         'ShinKage/idris2-nvim',
         dependencies = { 'neovim/nvim-lspconfig', 'MunifTanjim/nui.nvim' },
@@ -172,7 +173,9 @@ return {
     -- },
 
     -- "gc" to comment visual regions/lines
-    { 'numToStr/Comment.nvim',  opts = {} },
+    { 'numToStr/Comment.nvim', opts = {} },
+    -- Harpoon
+    { 'ThePrimeagen/harpoon' },
 
     -- Fuzzy Finder (files, lsp, etc)
     {

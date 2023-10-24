@@ -14,4 +14,5 @@ vim.keymap.set('n', '<leader>rr', ht.repl.toggle, opts)
 vim.keymap.set('n', '<leader>crn', function()
     ht.repl.toggle(vim.api.nvim_buf_get_name(0))
 end, def_opts)
+
 vim.keymap.set('n', '<leader>crq', ht.repl.quit, opts)
