@@ -163,6 +163,24 @@ return {
         },
         version = '^1.0.0', -- optional: only update when a new 1.x version is released
     },
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "debugloop/telescope-undo.nvim",
+        },
+        config = function()
+            require("telescope").setup({
+                extensions = {
+                    undo = {
+                        -- telescope-undo.nvim config, see below
+                    },
+                },
+            })
+            require("telescope").load_extension("undo")
+            -- optional: vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
+        end,
+    },
     -- {
     --   -- Add indentation guides even on blank lines
     --   'lukas-reineke/indent-blankline.nvim',
@@ -173,9 +191,14 @@ return {
     -- },
 
     -- "gc" to comment visual regions/lines
-    { 'numToStr/Comment.nvim', opts = {} },
+    { 'numToStr/Comment.nvim',  opts = {} },
     -- Harpoon
-    { 'ThePrimeagen/harpoon' },
+    {
+        'ThePrimeagen/harpoon',
+        -- opts = {
+        --     tabline = true
+        -- }
+    },
 
     -- Fuzzy Finder (files, lsp, etc)
     {
@@ -205,6 +228,9 @@ return {
             'nvim-treesitter/nvim-treesitter-textobjects',
         },
         build = ':TSUpdate',
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-context'
     },
 
     -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
