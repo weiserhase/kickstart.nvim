@@ -5,7 +5,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.cmd([[set virtualedit+=onemore]])
 
-local function severity_sorter(severity)
+--[[ local function severity_sorter(severity)
   local order = {
     Error = 0,
     Warning = 1,
@@ -13,7 +13,7 @@ local function severity_sorter(severity)
     Hint = 3,
   }
   return order[severity]
-end
+end ]]
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -239,6 +239,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     severity_sort = true,
   }
 )
+require('custom.lsp')
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'

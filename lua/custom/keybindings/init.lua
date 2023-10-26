@@ -42,9 +42,16 @@ require('which-key').register({
     ['<leader>h'] = { name = '[H]arpoon', _ = 'which_key_ignore' },
     ['<leader>ws'] = { name = '[W]indow [S]plit', _ = 'which_key_ignore' },
     ['<leader>wd'] = { name = '[W]orking [D]irectory', _ = 'which_key_ignore' },
-    ['<leader>i'] = { name = 'Search [I]gnored', _ = 'which_key_ignore' },
     ['<leader>t'] = { name = '[T]erminal', _ = 'which_key_ignore' },
 })
+
+local gitKeybindings = {
+    n = {
+        ['<Leader>g'] = { cmd = ":G<CR>", desc = 'Run arbitrary Git command' },
+    },
+}
+applyBindings(gitKeybindings)
+
 local function harpoon_nav_factory(x)
     return (function() require('harpoon.ui').nav_file(x) end)
 end
@@ -135,23 +142,23 @@ local telescopeKeybindings = {
         ['<leader>f'] = { cmd = require('telescope.builtin').find_files, desc = 'Search [F]iles' },
         ['<leader>sh'] = { cmd = require('telescope.builtin').help_tags, desc = '[S]earch [H]elp' },
 
-        ['<leader>ia'] = {
+        ['<leader>sa'] = {
             cmd = function()
                 local excludes = {}
                 require('telescope.builtin').find_files({
                     find_command = generate_find_command(excludes)
                 })
             end,
-            desc = 'Search [A]lles [F]iles with custom excludes'
+            desc = '[S]earch [A]ll Files'
         },
-        ['<leader>if'] = {
+        ['<leader>si'] = {
             cmd = function()
                 local excludes = { '**/.git/*', '**/node_modules/*', '**/*.log', '**/.bloop/*' }
                 require('telescope.builtin').find_files({
                     find_command = generate_find_command(excludes)
                 })
             end,
-            desc = 'Search [I]gnored [F]iles with custom excludes'
+            desc = '[S]earch [I]gnored Files with custom excludes'
         },
 
         ['<leader>sw'] = { cmd = require('telescope.builtin').grep_string, desc = '[S]earch current [W]ord' },
