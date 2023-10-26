@@ -1,3 +1,13 @@
+local function generate_find_command(excludes)
+    local cmd = { 'rg', '--files', '--hidden', '--no-ignore-vcs' }
+
+    for _, exclude in ipairs(excludes or {}) do
+        table.insert(cmd, '--glob')
+        table.insert(cmd, '!' .. exclude)
+    end
+
+    return cmd
+end
 local telescopeKeybindings = {
     n = {
         ['<leader>?'] = { cmd = require('telescope.builtin').oldfiles, desc = '[?] Find recently opened files' },
