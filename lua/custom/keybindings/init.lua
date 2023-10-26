@@ -47,8 +47,11 @@ require('which-key').register({
 
 local gitKeybindings = {
     n = {
-        ['<Leader>g'] = { cmd = ":G<CR>", desc = 'Run arbitrary Git command' },
+        ['<Leader>g']  = { cmd = ":G<CR>", desc = 'Run arbitrary Git command' },
         ['<Leader>gp'] = { cmd = ":Git push<CR>", desc = '[G]it Push' },
+        ['<Leader>gf'] = { cmd = ":Git pull<CR>", desc = '[G]it Push' },
+        ['<leader>gl'] = { cmd = ':Telescope git_commits<CR>', desc = '[G]it [C]ommits' },
+        ['<leader>gb'] = { cmd = ':Telescope git_branches<CR>', desc = '[G]it [B]Branches' },
     },
 }
 applyBindings(gitKeybindings)

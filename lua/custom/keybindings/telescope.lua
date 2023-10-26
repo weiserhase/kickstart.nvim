@@ -11,7 +11,7 @@ local telescopeKeybindings = {
             end,
             desc = '[/] Fuzzily search in current buffer'
         },
-        ['<leader>gf'] = { cmd = require('telescope.builtin').git_files, desc = 'Search [G]it [F]iles' },
+        ['<leader>sgf'] = { cmd = require('telescope.builtin').git_files, desc = 'Search [G]it [F]iles' },
         ['<leader>f'] = { cmd = require('telescope.builtin').find_files, desc = 'Search [F]iles' },
         ['<leader>sh'] = { cmd = require('telescope.builtin').help_tags, desc = '[S]earch [H]elp' },
 
