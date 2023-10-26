@@ -21,6 +21,14 @@ function applyBindings(keybindings)
     end
 end
 
+local b = {
+    n = {
+
+    }
+
+}
+applyBindings(b)
+
 require('which-key').register({
     ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
     ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
@@ -50,4 +58,3 @@ require('custom.keybindings.splits')
 require('custom.keybindings.lsp')
 require('custom.keybindings.barbar')
 require('custom.keybindings.terminal')
-require('custom.keybindings.harpoon')
