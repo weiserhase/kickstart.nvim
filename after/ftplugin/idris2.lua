@@ -20,6 +20,7 @@ function applyBindings(keybindings)
     end
 end
 
+vim.cmd([[autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]])
 local idris2Keybindings = {
     n = {
         ['<leader>cs'] = { cmd = require('idris2.code_action').case_split, desc = 'Idris2 [C]ase [S]plit' },
@@ -28,4 +29,5 @@ local idris2Keybindings = {
     }
 }
 
+vim.cmd([[nnoremap <Leader>cl <Cmd>lua vim.lsp.codelens.refresh()<CR>]])
 pcall(applyBindings, idris2Keybindings)
