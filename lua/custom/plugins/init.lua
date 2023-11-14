@@ -39,7 +39,7 @@ return {
         },
     },
     -- Idris2 Lsp
-    { 'ShinKage/idris2-vim' },
+    { 'edwinb/idris2-vim',    ft = { 'idris2' } },
     {
         'ShinKage/idris2-nvim',
         dependencies = { 'neovim/nvim-lspconfig', 'MunifTanjim/nui.nvim' },
