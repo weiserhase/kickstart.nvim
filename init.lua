@@ -4,7 +4,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.cmd([[set virtualedit+=onemore]])
-
 --[[ local function severity_sorter(severity)
   local order = {
     Error = 0,
@@ -94,8 +93,8 @@ vim.cmd [[
 vim.cmd([[
     autocmd CursorMoved,CursorMovedI * normal zz
 ]])
+vim.cmd([[set nrformats+=alpha]])
 -- [[ Basic Keymaps ]]
-
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 -- vim.api.nvim_set_keymap('i', '<C-V>', '<Nop>', { noremap = true, silent = true })vim.api.nvim_set_keymap('n', '<C-V>', '<C-Q>', { noremap = true, silent = true })
