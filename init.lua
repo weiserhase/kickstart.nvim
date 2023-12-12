@@ -194,6 +194,9 @@ local servers = {
   clangd = {},
   pyright = {},
   rust_analyzer = {},
+  jdtls = {},
+  texlab = {},
+  -- haskell_language_server = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
