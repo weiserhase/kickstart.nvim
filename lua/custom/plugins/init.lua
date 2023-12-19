@@ -2,6 +2,9 @@ function isWindows()
     return package.config:sub(1, 1) == "\\"
 end
 
+local function save_hook(action)
+    vim.cmd('silent write')
+end
 return {
     -- Git related plugins
     'tpope/vim-fugitive',
@@ -43,7 +46,9 @@ return {
     {
         'ShinKage/idris2-nvim',
         dependencies = { 'neovim/nvim-lspconfig', 'MunifTanjim/nui.nvim' },
-        opts = {}
+        opts = {
+            code_action_post_hook = save_hook
+        }
 
     },
 

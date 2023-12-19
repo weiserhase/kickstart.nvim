@@ -8,8 +8,11 @@ local lspKeybindings = {
         ['gI'] = { cmd = require('telescope.builtin').lsp_implementations, desc = '[G]oto [I]mplementation' },
         ['<leader>D'] = { cmd = vim.lsp.buf.type_definition, desc = 'Type [D]efinition' },
         ['<leader>ds'] = { cmd = require('telescope.builtin').lsp_document_symbols, desc = '[D]ocument [S]ymbols' },
-        ['<leader>wds'] = { cmd = require('telescope.builtin').lsp_dynamic_workspace_symbols, desc =
-        '[W]orkspace [S]ymbols' },
+        ['<leader>wds'] = {
+            cmd = require('telescope.builtin').lsp_dynamic_workspace_symbols,
+            desc =
+            '[W]orkspace [S]ymbols'
+        },
         ['K'] = { cmd = vim.lsp.buf.hover, desc = 'Hover Documentation' },
         ['<C-s>'] = { cmd = vim.lsp.buf.signature_help, desc = 'Signature Documentation' },
         ['gD'] = { cmd = vim.lsp.buf.declaration, desc = '[G]oto [D]eclaration' },
