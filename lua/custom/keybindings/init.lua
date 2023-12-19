@@ -52,7 +52,14 @@ local gitKeybindings = {
     },
 }
 applyBindings(gitKeybindings)
-
+local misc = {
+    n = {
+        ['<Leader>cw'] = { cmd = function()
+            vim.cmd([[:let @* = expand("%:p")]])
+        end, desc = 'Current File Path' },
+    },
+}
+applyBindings(misc)
 require('custom.keybindings.telescope')
 require('custom.keybindings.splits')
 require('custom.keybindings.lsp')
