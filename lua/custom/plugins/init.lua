@@ -181,8 +181,12 @@ return {
                 },
             })
             require("telescope").load_extension("undo")
-            -- optional: vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
+            vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
         end,
+    },
+    {
+        "nvim-telescope/telescope-file-browser.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
     },
     -- {
     --   -- Add indentation guides even on blank lines

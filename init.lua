@@ -106,7 +106,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-vim.api.nvim_set_keymap('n', '<C-k>', '<PageUp>', { noremap = true, silent = true })
+
 vim.api.nvim_set_keymap('n', '<C-j>', '<PageDown>', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>k', '<PageUp>', { noremap = true, silent = true })
@@ -146,10 +146,24 @@ require('telescope').setup {
           -- (autocmd User TelescopePreviewerLoaded setlocal wrap)
         }
       }
-    }
+    },
+  file_browser = {
+      theme = "ivy",
+      -- disables netrw and use telescope-file-browser in its place
+      hijack_netrw = true,
+      mappings = {
+        ["i"] = {
+          -- your custom insert mode mappings
+        },
+        ["n"] = {
+          -- your custom normal mode mappings
+        },
+      },
+    },
   },
 }
 
+require("telescope").load_extension "file_browser"
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 -- Enable Hoogle support

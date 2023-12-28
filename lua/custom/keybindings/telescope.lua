@@ -48,6 +48,19 @@ local telescopeKeybindings = {
         ['<leader>sg'] = { cmd = require('telescope.builtin').live_grep, desc = '[S]earch by [G]rep' },
         ['<leader>sd'] = { cmd = require('telescope.builtin').diagnostics, desc = '[S]earch [D]iagnostics' },
         ['<leader>sr'] = { cmd = require('telescope.builtin').resume, desc = '[S]earch [R]esume' },
+        ['<leader>bf'] = { cmd = function()
+            vim.cmd([[:Telescope file_browser]])
+        end, desc = '[B]rowse [F]iles' },
+        ['<leader>bc'] = { cmd = function()
+            vim.cmd([[:Telescope file_browser path=%:p:h select_buffer=true<CR>]])
+        end, desc = '[B]rowse [F]iles' },
+
+        ['<leader>ba'] = { cmd = function()
+            require('telescope').extensions.file_browser.file_browser({
+                hidden = true,
+                respect_gitignore = false,
+            })
+        end, desc = '[B]rowse [A]ll' },
     }
 }
 
