@@ -1,9 +1,16 @@
--- See `:help mapleader`
+-- See `:help mapleader
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.cmd([[set virtualedit+=onemore]])
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "haskell",
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+  end
+})
 --[[ local function severity_sorter(severity)
   local order = {
     Error = 0,
@@ -73,8 +80,17 @@ vim.wo.signcolumn = 'yes'
 vim.o.updatetime = 100
 vim.o.timeoutlen = 300
 
--- Set completeopt to have a better completion experience
+-- Set completeopt to have a better completion experiencej
 vim.o.completeopt = 'menuone,noselect'
+
+
+function isWindows()
+  return package.config:sub(1, 1) == "\\"
+end
+
+if isWindows() then
+  vim.o.shell = "pwsh"
+end
 
 vim.o.termguicolors = true
 vim.cmd([[
@@ -147,7 +163,7 @@ require('telescope').setup {
         }
       }
     },
-  file_browser = {
+    file_browser = {
       theme = "ivy",
       -- disables netrw and use telescope-file-browser in its place
       hijack_netrw = true,

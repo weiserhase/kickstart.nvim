@@ -16,7 +16,19 @@ return {
                 vim.g.floaterm_shell = "pwsh"
             end
         end
-    },
+    }, { -- Ayu theme
+    'Shatur/neovim-ayu',
+    lazy = false,
+    priority = 1000,
+    opts = { mirage = false },
+    config = function()
+        vim.opt.background = "dark"
+        require("ayu").setup({
+            mirage = true
+        })
+        require("ayu").colorscheme()
+    end
+},
     -- Detect tabstop and shiftwidth automatically
     -- 'tpope/vim-sleuth',
     { 'nvim-lua/plenary.nvim' },
@@ -42,7 +54,8 @@ return {
         },
     },
     -- Idris2 Lsp
-    { 'edwinb/idris2-vim',    ft = { 'idris2' } },
+    { 'edwinb/idris2-vim',       ft = { 'idris2' } },
+    { 'mfussenegger/nvim-jdtls', },
     {
         'ShinKage/idris2-nvim',
         dependencies = { 'neovim/nvim-lspconfig', 'MunifTanjim/nui.nvim' },
@@ -145,7 +158,7 @@ return {
         dependencies = {
             'nvim-lua/plenary.nvim',
         },
-        version = '^2', -- Recommended
+        version = '^3', -- Recommended
         ft = { 'haskell', 'lhaskell', 'cabal', 'cabalproject' },
     },
     {

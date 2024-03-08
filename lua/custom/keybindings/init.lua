@@ -66,3 +66,5 @@ require('custom.keybindings.lsp')
 require('custom.keybindings.barbar')
 require('custom.keybindings.terminal')
 require('custom.keybindings.harpoon')
+
+vim.keymap.set('t', '<Esc>', "<C-\\><C-n>", { silent = true })
