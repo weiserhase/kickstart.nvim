@@ -54,9 +54,12 @@ local gitKeybindings = {
 applyBindings(gitKeybindings)
 local misc = {
     n = {
-        ['<Leader>cw'] = { cmd = function()
-            vim.cmd([[:let @* = expand("%:p")]])
-        end, desc = 'Current File Path' },
+        ['<Leader>cw'] = {
+            cmd = function()
+                vim.cmd([[:let @* = expand("%:p")]])
+            end,
+            desc = 'Current File Path'
+        },
     },
 }
 applyBindings(misc)

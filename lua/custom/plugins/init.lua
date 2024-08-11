@@ -91,7 +91,11 @@ return {
     },
 
     -- Useful plugin to show you pending keybinds.
-    { 'folke/which-key.nvim',     opts = {} },
+    {
+        'folke/which-key.nvim',
+        opts = {},
+        dependencies = { 'echasnovski/mini.icons', 'nvim-tree/nvim-web-devicons' },
+    },
     {
         -- Adds git related signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
@@ -139,6 +143,7 @@ return {
     end
 
   }, ]]
+    { "nvim-neotest/nvim-nio" },
     {
         -- Set lualine as statusline
         'nvim-lualine/lualine.nvim',
