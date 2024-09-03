@@ -30,7 +30,7 @@ if not vim.loop.fs_stat(lazypath) then
     'clone',
     '--filter=blob:none',
     'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable', -- latest stable release
+    '--branch=stable',     -- latest stable release
     lazypath,
   }
 end
@@ -114,7 +114,6 @@ vim.cmd([[set nrformats+=alpha]])
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 -- vim.api.nvim_set_keymap('i', '<C-V>', '<Nop>', { noremap = true, silent = true })vim.api.nvim_set_keymap('n', '<C-V>', '<C-Q>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<C-v>', '<C-Q>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<C-V>', '<C-Q>', { noremap = true, silent = true })
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
@@ -153,12 +152,12 @@ require('telescope').setup {
   },
   extensions = {
     hoogle = {
-      render = 'default', -- Select the preview render engine: default|treesitter
+      render = 'default',       -- Select the preview render engine: default|treesitter
       -- default = simple approach to render the document
       -- treesitter = render the document by utilizing treesitter's html parser
-      renders = {             -- Render specific options
+      renders = {                       -- Render specific options
         treesitter = {
-          remove_wrap = false -- Remove hoogle's own text wrapping. E.g. if you uses neovim's buffer wrapping
+          remove_wrap = false           -- Remove hoogle's own text wrapping. E.g. if you uses neovim's buffer wrapping
           -- (autocmd User TelescopePreviewerLoaded setlocal wrap)
         }
       }
@@ -221,8 +220,28 @@ end
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  clangd = {},
-  pyright = {},
+  pyright = {
+    settings = {
+      python = {
+        analysis = {
+          typeCheckingMode = "strict",
+        },
+      },
+    },
+    flags = {
+      allow_incremental_sync = true,
+      debounce_text_changes = 150,
+    },
+    on_attach = function(client, bufnr)
+      print(vim.inspect(client.config.settings))
+    end,
+  },
+  clangd = {
+    -- cmd = { "clangd", "--std=c++20" },
+    init_options = {
+      fallbackFlags = { '--std=c++20' }
+    },
+  },
   rust_analyzer = {},
   jdtls = {},
   texlab = {},
@@ -234,44 +253,106 @@ local servers = {
     },
   },
 }
-
--- Setup neovim lua configuration
-require('neodev').setup()
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
-
-mason_lspconfig.setup {
-  ensure_installed = vim.tbl_keys(servers),
-}
-
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-    }
+function isModuleAvailable(name)
+  if package.loaded[name] then
+    return true
+  else
+    for _, searcher in ipairs(package.searchers or package.loaders) do
+      local loader = searcher(name)
+      if type(loader) == 'function' then
+        package.preload[name] = loader
+        return true
+      end
+    end
+    return false
   end
-}
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = {
-      spacing = 2,
-      prefix = '■',
-    },
-    signs = true,
-    underline = true,
-    update_in_insert = false,
-    severity_sort = true,
+end
+-- Setup neovim lua configuration
+
+if  isModuleAvailable("vscode") then
+  print("Running in VSCode Mode and disabling LSP ")
+  -- Running inside VSCode, disable Neovim diagnostics
+  -- vim.diagnostic.disable()
+
+  -- Optionally, disable the entire LSP setup to prevent conflicts
+  -- This depends on your workflow; disabling just diagnostics might be enough
+  vim.lsp.stop_client(vim.lsp.get_active_clients())
+
+  -- Running inside VSCode, disable Neovim diagnostics
+else
+  -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+  -- Extend capabilities with nvim-cmp
+  capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+  -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+  -- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
+  -- Ensure the servers above are installed
+  local mason_lspconfig = require 'mason-lspconfig'
+
+  mason_lspconfig.setup {
+    ensure_installed = vim.tbl_keys(servers),
   }
-)
-require('custom.lsp')
+
+  mason_lspconfig.setup_handlers {
+    function(server_name)
+      require('lspconfig')[server_name].setup {
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = servers[server_name],
+        filetypes = (servers[server_name] or {}).filetypes,
+      }
+    end
+  }
+
+  require('lspconfig').clangd.setup {
+    init_options = {
+      fallbackFlags = { '--std=c++20' }
+    },
+  }
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = {
+        spacing = 2,
+        prefix = '■',
+      },
+      signs = true,
+      underline = true,
+      update_in_insert = true,
+      severity_sort = true,
+    }
+  )
+  require('custom.lsp')
+
+  --
+  local mason_null_ls = require("mason-null-ls")
+
+  mason_null_ls.setup({
+    ensure_installed = { "black", "flake8" },
+    automatic_installation = true,
+  })
+  local null_ls = require("null-ls")
+
+  null_ls.setup({
+    sources = {
+      null_ls.builtins.formatting.black,
+      null_ls.builtins.diagnostics.flake8,
+    },
+    on_attach = function(client, bufnr)
+      if client.server_capabilities.documentFormattingProvider then
+        vim.cmd([[
+              augroup LspFormatting
+                autocmd! * <buffer>
+                autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ async = true })
+              augroup END
+            ]])
+      end
+    end,
+  })
+
+  require('lspconfig').pyright.setup {}
+end
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
@@ -322,3 +403,5 @@ cmp.setup {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+--

@@ -53,6 +53,39 @@ return {
 
         },
     },
+    {
+        'jayp0521/mason-null-ls.nvim',
+        config = function()
+            require('mason-null-ls').setup({
+                ensure_installed = { "black", "flake8" },
+                automatic_installation = true,
+            })
+        end
+    },
+    {
+        'jose-elias-alvarez/null-ls.nvim',
+        config = function()
+            local null_ls = require("null-ls")
+
+            null_ls.setup({
+
+                sources = {
+                    null_ls.builtins.formatting.black,
+                    null_ls.builtins.diagnostics.flake8,
+                },
+                on_attach = function(client, bufnr)
+                    if client.server_capabilities.documentFormattingProvider then
+                        vim.cmd([[
+              augroup LspFormatting
+                autocmd! * <buffer>
+                autocmd BufWritePre <buffer> lua vim.lsp.buf.format({ timeout_ms = 1000 })
+              augroup END
+            ]])
+                    end
+                end,
+            })
+        end
+    },
     -- Idris2 Lsp
     { 'edwinb/idris2-vim',       ft = { 'idris2' } },
     { 'mfussenegger/nvim-jdtls', },
